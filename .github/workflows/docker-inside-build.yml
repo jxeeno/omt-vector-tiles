@@ -40,14 +40,14 @@ jobs:
       - name: Generate tiles
         run: |
           make
-          ./quickstart.sh
-          mv data/tiles.mbtiles albania.mbtiles
-          gzip albania.mbtiles
+          ./quickstart.sh australia
+          mv data/tiles.mbtiles australia.mbtiles
+          gzip australia.mbtiles
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            albania.mbtiles.gz
-          tag_name: albania
+            australia.mbtiles.gz
+          tag_name: australia
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
