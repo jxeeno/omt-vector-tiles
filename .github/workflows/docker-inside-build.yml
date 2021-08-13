@@ -48,6 +48,6 @@ jobs:
         with:
           files: |
             albania.mbtiles.gz
-          tag_name: ${{github.event.inputs.tag}}
+          tag_name: albania
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
