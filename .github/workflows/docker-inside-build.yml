@@ -24,9 +24,6 @@ jobs:
       # For more information, see https://docs.npmjs.com/cli/ci.html
       - name: Quickstart
         run: |
-          sudo apt-get -y update
-          sudo apt-get -y dist-upgrade
-
           sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -44,3 +41,13 @@ jobs:
         run: |
           make
           ./quickstart.sh
+          mv tiles.mbtiles albania.mbtiles
+          gzip albania.mbtiles
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            albania.mbtiles.gz
+          tag_name: ${{github.event.inputs.tag}}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
