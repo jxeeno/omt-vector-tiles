@@ -39,8 +39,9 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
       - name: Generate tiles
         run: |
+          sed -i "/MAX_ZOOM=/c\MAX_ZOOM=14" .env
           make
-          MIN_ZOOM=0 MAX_ZOOM=14 ./quickstart.sh australia
+          ./quickstart.sh australia
           mv data/tiles.mbtiles australia.mbtiles
           gzip australia.mbtiles
       - name: Release
