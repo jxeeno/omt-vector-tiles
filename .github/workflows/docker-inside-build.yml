@@ -40,7 +40,7 @@ jobs:
       - name: Generate tiles
         run: |
           make
-          ./quickstart.sh australia
+          MIN_ZOOM=0 MAX_ZOOM=14 ./quickstart.sh australia
           mv data/tiles.mbtiles australia.mbtiles
           gzip australia.mbtiles
       - name: Release
@@ -48,6 +48,6 @@ jobs:
         with:
           files: |
             australia.mbtiles.gz
-          tag_name: australia
+          tag_name: australia14
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
