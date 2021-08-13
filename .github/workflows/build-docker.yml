@@ -18,20 +18,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
       -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            ghcr.io/jxeeno/osrm-with-data
-          # generate Docker tags based on the following events/attributes
-          flavor: |
-            prefix=tools
-          tags: |
-            type=ref,event=branch
-            type=sha
-      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       -
@@ -50,14 +36,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            AUS.mbtiles.gz
-            AUS.geojson.gz
-          tag_name: ${{github.event.inputs.tag}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tags: ghcr.io/jxeeno/omt-vector-tiles:buildimg

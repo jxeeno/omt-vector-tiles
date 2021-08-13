@@ -41,7 +41,7 @@ jobs:
         run: |
           make
           ./quickstart.sh
-          mv tiles.mbtiles albania.mbtiles
+          mv data/tiles.mbtiles albania.mbtiles
           gzip albania.mbtiles
       - name: Release
         uses: softprops/action-gh-release@v1
