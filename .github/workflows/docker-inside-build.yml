@@ -1,7 +1,7 @@
 name: Test docker inside docker
 on:
   push:
-    branches: ['master']
+    branches: ['main']
   workflow_dispatch:
     inputs:
       url:
@@ -40,3 +40,7 @@ jobs:
 
           sudo curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
+      - name: Generate tiles
+        run: |
+          make
+          ./quickstart.sh
