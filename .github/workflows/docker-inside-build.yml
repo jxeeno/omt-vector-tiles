@@ -14,42 +14,27 @@ jobs:
     # Containers must run in Linux based operating systems
     runs-on: ubuntu-latest
     steps:
-      # Downloads a copy of the code in your repository before running CI tests
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          repository: 'openmaptiles/openmaptiles'
-
       # Performs a clean installation of all dependencies in the `package.json` file
       # For more information, see https://docs.npmjs.com/cli/ci.html
       - name: Quickstart
         run: |
-          sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-
-          sudo usermod -aG docker $(whoami)
-
-          sudo apt-get install -y jq
-          COMPOSE_VERSION=1.29.2
-
-          sudo curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
+          curl -L https://github.com/systemed/tilemaker/releases/download/v2.0.0/tilemaker-ubuntu-16.04.zip > tilemaker-ubuntu-16.04.zip
+          unzip tilemaker-ubuntu-16.04.zip
+          curl -L https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip  > water.zip
+          unzip water.zip
+          ls -lh
       - name: Generate tiles
         run: |
-          sed -i "/MIN_ZOOM=/c\MIN_ZOOM=0" .env
-          sed -i "/MAX_ZOOM=/c\MAX_ZOOM=11" .env
-          make
-          ./quickstart.sh australia
-          mv data/tiles.mbtiles australia.mbtiles
-          gzip australia.mbtiles
+          curl -L http://download.geofabrik.de/europe/albania-latest.osm.pbf > albania.osm.pbf
+          ls -lh
+          ./build/tilemaker --input albania.osm.pbf --output albania.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
+          gzip albania.mbtiles
+          ls -lh
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            australia.mbtiles.gz
-          tag_name: australia0to11
+            albania.mbtiles.gz
+          tag_name: albania-tilemaker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
