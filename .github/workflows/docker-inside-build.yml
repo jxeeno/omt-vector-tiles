@@ -22,20 +22,20 @@ jobs:
           unzip tilemaker-ubuntu-16.04.zip
           chmod +x build/tilemaker
           curl -L https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip  > water.zip
-          unzip water.zip
+          unzip water.zip -d coastline
           ls -lh
       - name: Generate tiles
         run: |
-          curl -L http://download.geofabrik.de/europe/albania-latest.osm.pbf > albania.osm.pbf
+          curl -L http://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia.osm.pbf
           ls -lh
-          ./build/tilemaker --input albania.osm.pbf --output albania.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
+          ./build/tilemaker --input australia.osm.pbf --output australia.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
           gzip albania.mbtiles
           ls -lh
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            albania.mbtiles.gz
-          tag_name: albania-tilemaker
+            australia.mbtiles.gz
+          tag_name: australia-tilemaker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
