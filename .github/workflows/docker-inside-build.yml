@@ -29,7 +29,7 @@ jobs:
           curl -L http://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia.osm.pbf
           ls -lh
           ./build/tilemaker --input australia.osm.pbf --output australia.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
-          gzip albania.mbtiles
+          gzip australia.mbtiles
           ls -lh
       - name: Release
         uses: softprops/action-gh-release@v1
