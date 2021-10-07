@@ -23,7 +23,9 @@ jobs:
           chmod +x build/tilemaker
           curl -L https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip  > water.zip
           unzip water.zip -d coastline
+          mv coastline/water-polygons-split-4326/* coastline/
           ls -lh
+          ls -lh coastline
           curl -L http://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia.osm.pbf
           ls -lh
       - uses: systemed/tilemaker@v2.0.0
@@ -32,9 +34,6 @@ jobs:
           input: australia.osm.pbf
           # Required, same to --output. Could be a directory or a .mbtiles files
           output: australia.mbtiles
-          # Optional, other arguments
-          # If not being set, default to '--verbose'
-          extra: --threads 0
       - name: Generate tiles
         run: |
           ls -lh
@@ -45,6 +44,6 @@ jobs:
         with:
           files: |
             australia.mbtiles.gz
-          tag_name: australia-tilemaker2
+          tag_name: australia-tilemaker13
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
