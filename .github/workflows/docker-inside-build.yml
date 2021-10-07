@@ -1,7 +1,7 @@
 name: Test docker inside docker
 on:
   push:
-    branches: ['main']
+    branches: ['tmtest']
   workflow_dispatch:
     inputs:
       url:
@@ -24,11 +24,20 @@ jobs:
           curl -L https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip  > water.zip
           unzip water.zip -d coastline
           ls -lh
-      - name: Generate tiles
-        run: |
           curl -L http://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia.osm.pbf
           ls -lh
-          ./build/tilemaker --input australia.osm.pbf --output australia.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
+      - uses: systemed/tilemaker@v2.0.0
+        with:
+          # Required, same to --input
+          input: australia.osm.pbf
+          # Required, same to --output. Could be a directory or a .mbtiles files
+          output: australia.mbtiles
+          # Optional, other arguments
+          # If not being set, default to '--verbose'
+          extra: --threads 0
+      - name: Generate tiles
+        run: |
+          ls -lh
           gzip australia.mbtiles
           ls -lh
       - name: Release
@@ -36,6 +45,6 @@ jobs:
         with:
           files: |
             australia.mbtiles.gz
-          tag_name: australia-tilemaker
+          tag_name: australia-tilemaker2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
