@@ -26,9 +26,9 @@ jobs:
           mv coastline/water-polygons-split-4326/* coastline/
           ls -lh
           ls -lh coastline
-          sed -i "s/preferred_language = nil/preferred_language = \"en\"/g" resources/process-openmaptiles.lua
-          sed -i "s/name:latin/name:latin/g" resources/process-openmaptiles.lua
-          sed -i "s/name_int/name:nonlatin/g" resources/process-openmaptiles.lua
+          sed "s/preferred_language = nil/preferred_language = \"en\"/g" resources/process-openmaptiles.lua
+          sed "s/name:latin/name:latin/g" resources/process-openmaptiles.lua
+          sed "s/name_int/name:nonlatin/g" resources/process-openmaptiles.lua
           cat resources/process-openmaptiles.lua
       - name: Generate tiles
         run: |
