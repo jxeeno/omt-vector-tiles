@@ -1,4 +1,4 @@
-name: Test docker inside docker
+name: Tilemaker
 on:
   push:
     branches: ['main']
@@ -32,16 +32,16 @@ jobs:
           cat resources/process-openmaptiles.lua
       - name: Generate tiles
         run: |
-          curl -L http://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia.osm.pbf
+          curl -L http://download.geofabrik.de/australia-oceania/australia-oceania-latest.osm.pbf > australia-oceania.osm.pbf
           ls -lh
-          ./build/tilemaker --input australia.osm.pbf --output australia.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
+          ./build/tilemaker --input australia-oceania.osm.pbf --output australia-oceania.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
           gzip australia.mbtiles
           ls -lh
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            australia.mbtiles.gz
-          tag_name: australia-tilemaker-nolatin
+            australia-oceania.mbtiles.gz
+          tag_name: australia-oceania
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
