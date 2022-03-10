@@ -18,7 +18,7 @@ jobs:
       # For more information, see https://docs.npmjs.com/cli/ci.html
       - name: Quickstart
         run: |
-          curl -L https://github.com/systemed/tilemaker/releases/download/v2.0.0/tilemaker-macos-10.15.zip > tilemaker-macos-10.15.zip
+          curl -L https://github.com/systemed/tilemaker/releases/download/v2.1.0/tilemaker-macos-10.15.zip > tilemaker-macos-10.15.zip
           unzip tilemaker-macos-10.15.zip
           chmod +x build/tilemaker
           curl -L https://osmdata.openstreetmap.de/download/water-polygons-split-4326.zip  > water.zip
@@ -32,16 +32,16 @@ jobs:
           cat resources/process-openmaptiles.lua
       - name: Generate tiles
         run: |
-          curl -L https://download.geofabrik.de/australia-oceania-latest.osm.pbf > australia-oceania.osm.pbf
+          curl -L https://download.geofabrik.de/australia-oceania/australia-latest.osm.pbf > australia-oceania.osm.pbf
           ls -lh
-          ./build/tilemaker --input australia-oceania.osm.pbf --output australia-oceania.mbtiles --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
-          gzip australia-oceania.mbtiles
+          ./build/tilemaker --input australia-oceania.osm.pbf --output australia.mbtiles.gz --process resources/process-openmaptiles.lua --config resources/config-openmaptiles.json
+          gzip australia.mbtiles.gz
           ls -lh
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            australia-oceania.mbtiles.gz
-          tag_name: australia-oceania
+            australia.mbtiles.gz
+          tag_name: australia-2022-03
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
